@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoyu.lingdian.entity.CoreAoyunNum">
+	<resultMap id="coreAoyunNumMapper" type="CoreAoyunNum">
+						<id property="cranmUnid" column="CRANM_UNID" jdbcType="NUMERIC" /><!-- "标识UNID" -->
+				        <result property="" column="" jdbcType="" /><!-- "" -->
+				<result property="cranmWechat" column="CRANM_WECHAT" jdbcType="VARCHAR" /><!-- "所属公众号" -->
+				<result property="cranmNum" column="CRANM_NUM" jdbcType="NUMERIC" /><!-- "计数" -->
+				<result property="cranmCdate" column="CRANM_CDATE" jdbcType="TIMESTAMP" /><!-- "创建日期" -->
+				<result property="cranmUdate" column="CRANM_UDATE" jdbcType="TIMESTAMP" /><!-- "修改日期" -->
+			</resultMap>
+	<sql id="coreAoyunNumAsProperty">
+				CRANM_UNID AS cranmUnid,
+				 AS ,
+						CRANM_WECHAT AS cranmWechat,
+								CRANM_NUM AS cranmNum,
+								CRANM_CDATE AS cranmCdate,
+								CRANM_UDATE AS cranmUdate
+					</sql>
+	<sql id="coreAoyunNumFieldIf">
+				<if test="cranmUnid!=null" >CRANM_UNID,</if>
+						<if test="cranmWechat!=null" >CRANM_WECHAT,</if>
+				<if test="cranmNum!=null" >CRANM_NUM,</if>
+				<if test="cranmCdate!=null" >CRANM_CDATE,</if>
+				<if test="cranmUdate!=null" >CRANM_UDATE,</if>
+		        <if test="!=null" ></if>
+	</sql>
+	<sql id="coreAoyunNumProperty">
+				<if test="cranmUnid!=null" >#{cranmUnid,jdbcType=NUMERIC},</if>
+						<if test="cranmWechat!=null" >#{cranmWechat,jdbcType=VARCHAR},</if>
+				<if test="cranmNum!=null" >#{cranmNum,jdbcType=NUMERIC},</if>
+				<if test="cranmCdate!=null" >#{cranmCdate,jdbcType=TIMESTAMP},</if>
+				<if test="cranmUdate!=null" >#{cranmUdate,jdbcType=TIMESTAMP},</if>
+		        <if test="!=null" >#{,jdbcType=}</if>
+	</sql>
+	<sql id="coreAoyunNumPropertyIf">
+				<if test="cranmUnid!=null" >CRANM_UNID=#{cranmUnid,jdbcType=NUMERIC},</if>
+						<if test="cranmWechat!=null" >CRANM_WECHAT=#{cranmWechat,jdbcType=VARCHAR},</if>
+				<if test="cranmNum!=null" >CRANM_NUM=#{cranmNum,jdbcType=NUMERIC},</if>
+				<if test="cranmCdate!=null" >CRANM_CDATE=#{cranmCdate,jdbcType=TIMESTAMP},</if>
+				<if test="cranmUdate!=null" >CRANM_UDATE=#{cranmUdate,jdbcType=TIMESTAMP},</if>
+		        <if test="!=null" >=#{,jdbcType=}</if>
+	</sql>
+	<insert id="insertCoreAoyunNum" parameterType="CoreAoyunNum" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO core_aoyun_num(<include refid="coreAoyunNumFieldIf" />) VALUES (<include refid="coreAoyunNumProperty" />)
+	</insert>
+	<delete id="deleteCoreAoyunNum" parameterType="CoreAoyunNum">
+		DELETE FROM core_aoyun_num <where>=#{,jdbcType=}</where>
+	</delete>
+	<select id="getCoreAoyunNum" resultMap="coreAoyunNumMapper" parameterType="CoreAoyunNum">
+		SELECT <include refid="coreAoyunNumAsProperty" /> FROM core_aoyun_num <where>=#{,jdbcType=}</where>
+	</select>
+	<update id="updateCoreAoyunNum" parameterType="CoreAoyunNum">
+		UPDATE core_aoyun_num<set><include refid="coreAoyunNumPropertyIf" /></set> <where>=#{,jdbcType=}</where>
+	</update>
+	<!--  批量删除-->
+	<delete id="deleteBatchCoreAoyunNumByIds" parameterType="HashMap">
+		DELETE FROM core_aoyun_num
+		<where>
+			<if test="list != null and list.size>0">
+                 in
+				<foreach item="item" index="id" collection="list" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
+		</where>
+	</delete>
+	<!--  获取所有list-->
+	<select id="findCoreAoyunNumForLists" resultMap="coreAoyunNumMapper" parameterType="HashMap">
+		SELECT <include refid="coreAoyunNumAsProperty" />
+		FROM core_aoyun_num
+	</select>
+	<!--  获取所有page-->
+	<select id="findCoreAoyunNumForPages" resultMap="coreAoyunNumMapper" parameterType="HashMap">
+		SELECT <include refid="coreAoyunNumAsProperty" />
+		FROM core_aoyun_num
+		<where>
+			1=1
+		</where>
+	</select>
+
+</mapper>
