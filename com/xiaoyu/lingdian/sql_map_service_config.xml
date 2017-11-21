@@ -1,5 +1,0 @@
-<typeAlias type="com.xiaoyu.lingdian.entity.CoreAoyunCode" alias="CoreAoyunCode" />
-<typeAlias type="com.xiaoyu.lingdian.entity.CoreAoyunNum" alias="CoreAoyunNum" />
-
-<mapper resource="com/xiaoyu/lingdian/CoreAoyunCodeMapper.xml" />
-<mapper resource="com/xiaoyu/lingdian/CoreAoyunNumMapper.xml" />
