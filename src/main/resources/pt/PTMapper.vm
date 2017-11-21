@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${tableinfo.packageName}.entity.${tableinfo.tableNameFtUpcase}">
+	<resultMap id="${tableinfo.tableNameFt}Mapper" type="${tableinfo.tableNameFtUpcase}">
+		#if($!tableinfo.pkColList.size()==1)
+		#foreach($!item in $!tableinfo.pkColList)
+		<id property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" /><!-- "$!item.comment" -->
+		#end
+		#else
+		#foreach($!item in $!tableinfo.pkColList)
+		<result property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" /><!-- "$!item.comment" -->
+		#end
+		#end
+        <result property="$!tableinfo.uuidColum.javaName" column="$!tableinfo.uuidColum.columName" jdbcType="$!tableinfo.uuidColum.jdbcType" /><!-- "$!tableinfo.uuidColum.comment" -->
+		#foreach($!item in $!tableinfo.npkColList)
+		<result property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" /><!-- "$!item.comment" -->
+		#end
+	</resultMap>
+	<sql id="${tableinfo.tableNameFt}AsProperty">
+		#foreach($!item in $!tableinfo.pkColList)
+		$!item.columName AS $!item.javaName,
+		#end
+		$!tableinfo.uuidColum.columName AS $!tableinfo.uuidColum.javaName,
+		#foreach($!item in $!tableinfo.npkColList)
+		#if($!velocityCount != $!tableinfo.npkColList.size())
+		$!item.columName AS $!item.javaName,
+		#else
+		$!item.columName AS $!item.javaName
+		#end
+		#end
+	</sql>
+	<sql id="${tableinfo.tableNameFt}FieldIf">
+		#foreach($!item in $!tableinfo.pkColList)
+		<if test="$!item.javaName!=null" >$!item.columName,</if>
+		#end
+		#foreach($!item in $!tableinfo.npkColList)
+		<if test="$!item.javaName!=null" >$!item.columName,</if>
+		#end
+        <if test="$!tableinfo.uuidColum.javaName!=null" >$!tableinfo.uuidColum.columName</if>
+	</sql>
+	<sql id="${tableinfo.tableNameFt}Property">
+		#foreach($!item in $!tableinfo.pkColList)
+		<if test="$!item.javaName!=null" >#{$!item.javaName,jdbcType=$!item.jdbcType},</if>
+		#end
+		#foreach($!item in $!tableinfo.npkColList)
+		<if test="$!item.javaName!=null" >#{$!item.javaName,jdbcType=$!item.jdbcType},</if>
+		#end
+        <if test="$!tableinfo.uuidColum.javaName!=null" >#{$!tableinfo.uuidColum.javaName,jdbcType=$!tableinfo.uuidColum.jdbcType}</if>
+	</sql>
+	<sql id="${tableinfo.tableNameFt}PropertyIf">
+		#foreach($!item in $!tableinfo.pkColList)
+		<if test="$!item.javaName!=null" >$!item.columName=#{$!item.javaName,jdbcType=$!item.jdbcType},</if>
+		#end
+		#foreach($!item in $!tableinfo.npkColList)
+		<if test="$!item.javaName!=null" >$!item.columName=#{$!item.javaName,jdbcType=$!item.jdbcType},</if>
+		#end
+        <if test="$!tableinfo.uuidColum.javaName!=null" >$!tableinfo.uuidColum.columName=#{$!tableinfo.uuidColum.javaName,jdbcType=$!tableinfo.uuidColum.jdbcType}</if>
+	</sql>
+	<insert id="insert${tableinfo.tableNameFtUpcase}" parameterType="${tableinfo.tableNameFtUpcase}" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO ${tableinfo.tableName}(<include refid="${tableinfo.tableNameFt}FieldIf" />) VALUES (<include refid="${tableinfo.tableNameFt}Property" />)
+	</insert>
+	<delete id="delete${tableinfo.tableNameFtUpcase}" parameterType="${tableinfo.tableNameFtUpcase}">
+		DELETE FROM ${tableinfo.tableName} <where>$!tableinfo.uuidColum.columName=#{$!tableinfo.uuidColum.javaName,jdbcType=$!tableinfo.uuidColum.jdbcType}</where>
+	</delete>
+	<select id="get${tableinfo.tableNameFtUpcase}" resultMap="${tableinfo.tableNameFt}Mapper" parameterType="${tableinfo.tableNameFtUpcase}">
+		SELECT <include refid="${tableinfo.tableNameFt}AsProperty" /> FROM ${tableinfo.tableName} <where>$!tableinfo.uuidColum.columName=#{$!tableinfo.uuidColum.javaName,jdbcType=$!tableinfo.uuidColum.jdbcType}</where>
+	</select>
+	<update id="update${tableinfo.tableNameFtUpcase}" parameterType="${tableinfo.tableNameFtUpcase}">
+		UPDATE ${tableinfo.tableName}<set><include refid="${tableinfo.tableNameFt}PropertyIf" /></set> <where>$!tableinfo.uuidColum.columName=#{$!tableinfo.uuidColum.javaName,jdbcType=$!tableinfo.uuidColum.jdbcType}</where>
+	</update>
+	<!--  批量删除-->
+	<delete id="deleteBatch${tableinfo.tableNameFtUpcase}ByIds" parameterType="HashMap">
+		DELETE FROM ${tableinfo.tableName}
+		<where>
+			<if test="list != null and list.size>0">
+                $!tableinfo.uuidColum.columName in
+				<foreach item="item" index="id" collection="list" open="(" separator="," close=")">
+					'${item}'
+				</foreach>
+			</if>
+		</where>
+	</delete>
+	<!--  获取所有list-->
+	<select id="find${tableinfo.tableNameFtUpcase}ForLists" resultMap="${tableinfo.tableNameFt}Mapper" parameterType="HashMap">
+		SELECT <include refid="${tableinfo.tableNameFt}AsProperty" />
+		FROM ${tableinfo.tableName}
+	</select>
+	<!--  获取所有page-->
+	<select id="find${tableinfo.tableNameFtUpcase}ForPages" resultMap="${tableinfo.tableNameFt}Mapper" parameterType="HashMap">
+		SELECT <include refid="${tableinfo.tableNameFt}AsProperty" />
+		FROM ${tableinfo.tableName}
+		<where>
+			#foreach($!item in $!tableinfo.npkColList)
+				#if($!item.jdbcType=="VARCHAR")
+                <if test="$!item.javaName!=null and $!item.javaName!=''">
+					and $!item.columName like concat('%',#{$!item.javaName,jdbcType=$!item.jdbcType},'%')
+				</if>
+				#else
+                <if test="$!item.javaName!=null">
+					and $!item.columName=#{$!item.javaName,jdbcType=$!item.jdbcType}
+				</if>
+				#end
+			#end
+		</where>
+	</select>
+</mapper>

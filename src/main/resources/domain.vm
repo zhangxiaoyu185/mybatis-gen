@@ -1,0 +1,56 @@
+package $!{tableinfo.packageName}.dao.entity;
+
+#if($!tableinfo.importPack.size() > 0)
+import com.jumore.dove.aop.Id;
+import com.jumore.dove.aop.Sequence;
+#end
+import com.jumore.dove.aop.Column;
+import com.jumore.dove.aop.Entity;
+import com.jumore.dove.aop.Table;
+#foreach($item in $!tableinfo.importPack)
+import $!{item};
+#end
+
+/**
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+@Entity
+@Table(name="$!{tableinfo.tableName}")
+public class $!{tableinfo.tableNameFtUpcase}PO {
+	#foreach($item in $!{tableinfo.pkColList})
+	/**$!{item.comment}*/
+	@Column(name="$!{item.columName}")
+	@Id
+	@Sequence
+	private $!{item.javaTypeShort} $!{item.javaName};
+
+	#end
+	#foreach($item in $!{tableinfo.npkColList})
+	/**$!{item.comment}*/
+    @Column(name="$!{item.columName}")
+	private $!{item.javaTypeShort} $!{item.javaName};
+
+	#end
+	#foreach($item in $!{tableinfo.pkColList})
+	public $!{item.javaTypeShort} get$!{item.javaNameUpcase}() {
+		return $!{item.javaName};
+	}
+
+	public void set$!{item.javaNameUpcase}($!{item.javaTypeShort} $!{item.javaName}) {
+		this.$!{item.javaName} = $!{item.javaName};
+	}
+
+	#end
+	#foreach($item in $!tableinfo.npkColList)
+	public $!{item.javaTypeShort} get$!{item.javaNameUpcase}() {
+		return $!{item.javaName};
+	}
+
+	public void set$!{item.javaNameUpcase}($!{item.javaTypeShort} $!{item.javaName}) {
+		this.$!{item.javaName} = $!{item.javaName};
+	}
+
+	#end
+}

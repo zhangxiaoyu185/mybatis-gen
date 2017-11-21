@@ -1,0 +1,18 @@
+package ${tableinfo.packageName}.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.jumore.dove.service.BaseServiceImpl;
+import ${tableinfo.packageName}.dao.entity.${tableinfo.tableNameFtUpcase}PO;
+import ${tableinfo.packageName}.service.${tableinfo.tableNameFtUpcase}Service;
+
+/**
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+@Service
+public class ${tableinfo.tableNameFtUpcase}ServiceImpl extends BaseServiceImpl implements ${tableinfo.tableNameFtUpcase}Service {
+
+}

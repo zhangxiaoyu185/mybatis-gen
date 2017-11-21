@@ -1,0 +1,69 @@
+package $!{tableinfo.packageName}.service.impl;
+
+import $!{tableinfo.packageName}.core.mybatis.dao.MyBatisDAO;
+import $!{tableinfo.packageName}.core.mybatis.page.Page;
+import $!{tableinfo.packageName}.core.mybatis.page.PageRequest;
+import $!{tableinfo.packageName}.entity.$!{tableinfo.tableNameFtUpcase};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.xiaoyu.lingdian.tool.BeanToMapUtil;
+import $!{tableinfo.packageName}.service.$!{tableinfo.tableNameFtUpcase}Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+* $!{tableinfo.tableDesc}
+*/
+@Service("$!{tableinfo.tableNameFt}Service")
+public class $!{tableinfo.tableNameFtUpcase}ServiceImpl implements $!{tableinfo.tableNameFtUpcase}Service {
+
+	@Autowired
+	private MyBatisDAO myBatisDAO;
+
+	@Override
+	public boolean insert$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}) {
+		myBatisDAO.insert($!{tableinfo.tableNameFt});
+		return true;
+	}
+
+	@Override
+	public boolean update$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}) {
+		myBatisDAO.update($!{tableinfo.tableNameFt});
+		return true;
+	}
+
+	@Override
+	public boolean delete$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}) {
+		myBatisDAO.delete($!{tableinfo.tableNameFt});
+		return true;
+	}
+
+	@Override
+	public boolean deleteBatchByIds(List<String> list ) {
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("list", list);
+		myBatisDAO.delete("deleteBatch$!{tableinfo.tableNameFtUpcase}ByIds",hashMap);
+		return true;
+	}
+
+	@Override
+	public $!{tableinfo.tableNameFtUpcase} get$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}) {
+		return ($!{tableinfo.tableNameFtUpcase}) myBatisDAO.findForObject($!{tableinfo.tableNameFt});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<$!{tableinfo.tableNameFtUpcase}> find$!{tableinfo.tableNameFtUpcase}List() {
+		return myBatisDAO.findForList("find$!{tableinfo.tableNameFtUpcase}ForLists", null);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<$!{tableinfo.tableNameFtUpcase}> find$!{tableinfo.tableNameFtUpcase}Page($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}, int pageNum, int pageSize) {
+		Map<String, Object> hashMap = BeanToMapUtil.objectToMapReflect($!{tableinfo.tableNameFt});
+		return myBatisDAO.findForPage("find$!{tableinfo.tableNameFtUpcase}ForPages", new PageRequest(pageNum, pageSize, hashMap));
+	}
+
+}

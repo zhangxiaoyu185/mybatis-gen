@@ -1,0 +1,13 @@
+package ${tableinfo.packageName}.service;
+
+import com.jumore.dove.service.BaseService;
+import ${tableinfo.packageName}.dao.entity.${tableinfo.tableNameFtUpcase}PO;
+
+/**
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+public interface ${tableinfo.tableNameFtUpcase}Service extends BaseService {
+
+}

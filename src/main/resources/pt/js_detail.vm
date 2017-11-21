@@ -1,0 +1,36 @@
+$(function () {
+	initDetail();
+});
+//初始化
+function initDetail(){
+	getInfo(getQueryString("id"));
+}
+//获取详情
+function getInfo(id){
+	var str = '$!{tableinfo.uuidColum.javaName}='+encodeURIComponent(id);
+	getOData(str,"$!{tableinfo.tableNameFt}/views",{fn:function(oData){
+		if(oData.code == 1) {
+	#foreach($item in $!{tableinfo.npkColList})
+		#if($!stringUtil.like($!{item.javaName}, "pic"))
+			getImageWidthHeight(urlfile+"/coreAttachment/image/get/thumb/"+oData.data.$!{item.javaName},function(realWidth,realHeight){
+				var width = 0;
+				var height = 200;
+				//如果真实的宽度大于浏览器的宽度就按照200显示
+				if(realHeight>=height){
+					width = realWidth/realHeight*height;
+					$(".preimg").css("width",width).css("height",height);
+				}else{//如果小于浏览器的宽度按照原尺寸显示}
+					$(".preimg").css("width",realWidth+'px').css("height",realHeight+'px');
+				}
+				$(".preimg").attr("src",urlfile+"/coreAttachment/image/get/thumb/"+oData.data.$!{item.javaName});
+				$(".preimg").attr("data-filename",$!{item.comment});
+			});
+		#else
+			$(".$!{item.javaName}").text(oData.data.$!{item.javaName} || "");
+		#end
+	#end
+		} else {
+			alert(data.errMsg);
+		}
+	}});
+}

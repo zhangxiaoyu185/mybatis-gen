@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${tableinfo.tableNameFtUpcase}POMapper">
+	<resultMap id="BaseResultMap" type="${tableinfo.packageName}.dao.entity.${tableinfo.tableNameFtUpcase}PO">
+		#if($!tableinfo.pkColList.size()==1)
+		#foreach($!item in $!tableinfo.pkColList)
+		<id property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" />
+		#end
+		#else
+		#foreach($!item in $!tableinfo.pkColList)
+		<result property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" />
+		#end
+		#end
+		#foreach($!item in $!tableinfo.npkColList)
+		<result property="$!item.javaName" column="$!item.columName" jdbcType="$!item.jdbcType" />
+		#end
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		#foreach($!item in $!tableinfo.pkColList) #if($!velocityCount>1) ,#end$!item.columName#end#foreach($!item in $!tableinfo.npkColList)#if($!tableinfo.pkColList.size()>0),#end $!item.columName#end
+	</sql>
+
+</mapper>

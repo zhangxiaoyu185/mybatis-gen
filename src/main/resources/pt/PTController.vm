@@ -1,0 +1,226 @@
+package $!{tableinfo.packageName}.controller;
+
+#foreach($item in $!tableinfo.importPack)
+import $!{item};
+#end
+import $!{tableinfo.packageName}.service.$!{tableinfo.tableNameFtUpcase}Service;
+import $!{tableinfo.packageName}.core.mybatis.page.Page;
+import $!{tableinfo.packageName}.entity.$!{tableinfo.tableNameFtUpcase};
+import $!{tableinfo.packageName}.tool.RandomUtil;
+import $!{tableinfo.packageName}.tool.StringUtil;
+import $!{tableinfo.packageName}.tool.out.ResultMessageBuilder;
+import $!{tableinfo.packageName}.vo.$!{tableinfo.tableNameFtUpcase}VO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+* $!{tableinfo.tableDesc}
+*/
+@Controller
+@RequestMapping(value="/$!{tableinfo.tableNameFt}")
+public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
+
+	/**
+	* $!{tableinfo.tableDesc}
+	*/
+	@Autowired
+	private $!{tableinfo.tableNameFtUpcase}Service $!{tableinfo.tableNameFt}Service;
+	
+	/**
+	* 添加
+	*
+#foreach($item in $!{tableinfo.npkColList})
+	* @param $!{item.javaName} $!{item.comment}
+#end
+	* @return
+	*/
+	@RequestMapping(value="/add/$!{tableinfo.tableNameFt}", method=RequestMethod.POST)
+	public void add$!{tableinfo.tableNameFtUpcase} (#foreach($item in $!{tableinfo.npkColList})$!{item.javaTypeShort} $!{item.javaName}, #end HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin add$!{tableinfo.tableNameFtUpcase}");
+
+		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
+		String uuid = RandomUtil.generateString(16);
+		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}(uuid);
+		#foreach($item in $!{tableinfo.npkColList})
+		$!{tableinfo.tableNameFt}.set$!{item.javaNameUpcase}($!{item.javaName});
+		#end
+
+		$!{tableinfo.tableNameFt}Service.insert$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFt});
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "新增成功!"),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end add$!{tableinfo.tableNameFtUpcase}");
+	}
+
+	/**
+	* 修改
+	*
+	* @param $!{tableinfo.uuidColum.javaName} $!{tableinfo.uuidColum.comment}
+#foreach($item in $!{tableinfo.npkColList})
+	* @param $!{item.javaName} $!{item.comment}
+#end
+	* @return
+	*/
+	@RequestMapping(value="/update/$!{tableinfo.tableNameFt}", method=RequestMethod.POST)
+	public void update$!{tableinfo.tableNameFtUpcase} ($!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName}, #foreach($item in $!{tableinfo.npkColList})$!{item.javaTypeShort} $!{item.javaName}, #end HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin update$!{tableinfo.tableNameFtUpcase}");
+
+		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
+			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
+			return;
+		}
+
+		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
+		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
+#foreach($item in $!{tableinfo.npkColList})
+		$!{tableinfo.tableNameFt}.set$!{item.javaNameUpcase}($!{item.javaName});
+#end
+
+		$!{tableinfo.tableNameFt}Service.update$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFt});
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "修改成功!"),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end update$!{tableinfo.tableNameFtUpcase}");
+	}
+
+	/**
+	* 删除
+	*
+	* @param $!{tableinfo.uuidColum.javaName} $!{tableinfo.uuidColum.comment}
+	* @return
+	*/
+	@RequestMapping(value="/delete/one", method=RequestMethod.POST)
+	public void delete$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}, HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin delete$!{tableinfo.tableNameFtUpcase}");
+
+		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
+			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
+			return;
+		}
+
+		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
+		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
+
+		$!{tableinfo.tableNameFt}Service.delete$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFt});
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "删除成功!"),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end delete$!{tableinfo.tableNameFtUpcase}");
+	}
+
+	/**
+	* 批量删除
+	*
+	* @param $!{tableinfo.uuidColum.javaName}s UUID集合
+	* @return
+	*/
+	@RequestMapping(value="/delete/batch", method=RequestMethod.POST)
+	public void deleteBatch$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}s, HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin deleteBatch$!{tableinfo.tableNameFtUpcase}");
+
+		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName}s)) {
+			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[UUID集合]不能为空!"), response);
+			return;
+		}
+
+		String[] uuids=$!{tableinfo.uuidColum.javaName}s.split("\\|");
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < uuids.length; i++) {
+			list.add(uuids[i]);
+		}
+		if (list.size() == 0) {
+			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "请选择批量删除对象！"), response);
+			return;
+		}
+		$!{tableinfo.tableNameFt}Service.deleteBatchByIds(list);
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "批量删除成功!"),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end deleteBatch$!{tableinfo.tableNameFtUpcase}");
+	}
+
+	/**
+	* 获取单个
+	*
+	* @param $!{tableinfo.uuidColum.javaName} $!{tableinfo.uuidColum.comment}
+	* @return
+	*/
+	@RequestMapping(value="/views", method=RequestMethod.POST)
+	public void views$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}, HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin views$!{tableinfo.tableNameFtUpcase}");
+
+		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
+			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
+			return;
+		}
+
+		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
+		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
+
+		$!{tableinfo.tableNameFt} = $!{tableinfo.tableNameFt}Service.get$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFt});
+
+		$!{tableinfo.tableNameFtUpcase}VO $!{tableinfo.tableNameFt}VO = new $!{tableinfo.tableNameFtUpcase}VO();
+		$!{tableinfo.tableNameFt}VO.convertPOToVO($!{tableinfo.tableNameFt});
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "获取单个信息成功", $!{tableinfo.tableNameFt}VO), response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end views$!{tableinfo.tableNameFtUpcase}");
+	}
+
+	/**
+	* 获取列表<List>
+	* 
+	* @return
+	*/
+	@RequestMapping(value="/find/all", method=RequestMethod.POST)
+	public void find$!{tableinfo.tableNameFtUpcase}List (HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin find$!{tableinfo.tableNameFtUpcase}List");
+
+		List<$!{tableinfo.tableNameFtUpcase}> lists = $!{tableinfo.tableNameFt}Service.find$!{tableinfo.tableNameFtUpcase}List();
+		List<$!{tableinfo.tableNameFtUpcase}VO> vos = new ArrayList<$!{tableinfo.tableNameFtUpcase}VO>();
+		$!{tableinfo.tableNameFtUpcase}VO vo;
+		for ($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} : lists) {
+			vo = new $!{tableinfo.tableNameFtUpcase}VO();
+			vo.convertPOToVO($!{tableinfo.tableNameFt});
+			vos.add(vo);
+		}
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "list列表获取成功!", vos),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end find$!{tableinfo.tableNameFtUpcase}List");
+	}
+
+	/**
+	* 获取列表<Page>
+	*
+    * @param $!{tableinfo.tableNameFt}
+	* @param pageNum 页码
+	* @param pageSize 页数
+	* @return
+	*/
+	@RequestMapping(value="/find/by/cnd", method=RequestMethod.POST)
+	public void find$!{tableinfo.tableNameFtUpcase}Page ($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}, Integer pageNum, Integer pageSize, HttpServletResponse response) {
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin find$!{tableinfo.tableNameFtUpcase}Page");
+
+		if (pageNum == null || pageNum == 0) {
+			pageNum = 1;
+		}
+		if (pageSize == null || pageSize == 0) {
+			pageSize = 10;
+		}
+		Page<$!{tableinfo.tableNameFtUpcase}> page = $!{tableinfo.tableNameFt}Service.find$!{tableinfo.tableNameFtUpcase}Page($!{tableinfo.tableNameFt}, pageNum, pageSize);
+		Page<$!{tableinfo.tableNameFtUpcase}VO> pageVO = new Page<$!{tableinfo.tableNameFtUpcase}VO>(page.getPageNumber(), page.getPageSize(), page.getTotalCount());
+		List<$!{tableinfo.tableNameFtUpcase}VO> vos = new ArrayList<$!{tableinfo.tableNameFtUpcase}VO>();
+		$!{tableinfo.tableNameFtUpcase}VO vo;
+		for ($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}PO : page.getResult()) {
+			vo = new $!{tableinfo.tableNameFtUpcase}VO();
+			vo.convertPOToVO($!{tableinfo.tableNameFt}PO);
+			vos.add(vo);
+		}
+		pageVO.setResult(vos);
+
+		writeAjaxJSONResponse(ResultMessageBuilder.build(true, 1, "page列表获取成功!", pageVO),response);
+		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end find$!{tableinfo.tableNameFtUpcase}Page");
+	}
+
+}

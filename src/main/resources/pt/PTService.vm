@@ -1,0 +1,60 @@
+package $!{tableinfo.packageName}.service;
+
+import $!{tableinfo.packageName}.core.mybatis.page.Page;
+import $!{tableinfo.packageName}.entity.$!{tableinfo.tableNameFtUpcase};
+
+import java.util.List;
+
+/**
+* $!{tableinfo.tableDesc}
+*/
+public interface $!{tableinfo.tableNameFtUpcase}Service {
+
+	/**
+	* 添加
+	* @param $!{tableinfo.tableNameFt}
+	* @return
+	*/
+	public boolean insert$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt});
+
+	/**
+	* 修改
+	* @param $!{tableinfo.tableNameFt}
+	* @return
+	*/
+	public boolean update$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt});
+
+	/**
+	* 删除
+	* @param $!{tableinfo.tableNameFt}
+	* @return
+	*/
+	public boolean delete$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt});
+
+	/**
+	* 批量删除
+	* @param list
+	* @return boolean
+	*/
+	public boolean deleteBatchByIds(List<String> list);
+
+	/**
+	* 查询
+	* @param $!{tableinfo.tableNameFt}
+	* @return
+	*/
+	public $!{tableinfo.tableNameFtUpcase} get$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt});
+
+	/**
+	* 查询所有List
+	* @return List
+	*/
+	public List<$!{tableinfo.tableNameFtUpcase}> find$!{tableinfo.tableNameFtUpcase}List();
+
+	/**
+	* 查询所有Page
+	* @return Page
+	*/
+	public Page<$!{tableinfo.tableNameFtUpcase}> find$!{tableinfo.tableNameFtUpcase}Page($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}, int pageNum, int pageSize);
+
+}

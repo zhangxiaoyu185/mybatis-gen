@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- jdbc连接库jar包路径 -->
+    <classPathEntry location="D:\mybatis-gen\src\lib\mysql-connector-java-5.1.26.jar" />
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+        	<property name="suppressDate" value="true" />
+        	<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+            <property name="javaFileEncoding" value="UTF-8" />
+        </commentGenerator>
+        <!-- jdbc连接配置 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://172.18.1.11:3306/jmzx_dev2" userId="jmzx_dev2"
+            password="jmzx_dev2">
+        </jdbcConnection>
+        <!-- 数字字段是否强制使用BigDecimal类 -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- entity创建后放在那个项目的哪个包路径上 -->
+        <javaModelGenerator targetPackage="com.jumore.jmzxcenter.dao.entity"
+            targetProject="F:\1">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- dao创建后放在那个项目的哪个包路径上 -->
+        <sqlMapGenerator targetPackage="com.jumore.jmzxcenter.dao"
+            targetProject="F:\1">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- dao的.xml描述sql文件创建后放在那个项目的哪个包路径上 -->
+        <javaClientGenerator type="XMLMAPPER"
+            targetPackage="com.jumore.jmzxcenter.dao" 
+            targetProject="F:\1">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!-- 
+                                          要生成的表配置，可以多个
+            tableName：表名
+            domainObjectName：指定类名
+        -->  
+        <table tableName="jmzx_real_record" domainObjectName="jmzxRealRecordPO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />
+    </context>
+</generatorConfiguration>

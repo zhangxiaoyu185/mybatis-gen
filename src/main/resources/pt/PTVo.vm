@@ -1,0 +1,71 @@
+package ${tableinfo.packageName}.vo;
+
+import ${tableinfo.packageName}.entity.${tableinfo.tableNameFtUpcase};
+#foreach($!item in $!tableinfo.importPack)
+import ${item};
+#end
+
+/**
+* $!{tableinfo.tableDesc}
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+public class ${tableinfo.tableNameFtUpcase}VO implements BaseVO {
+	#foreach($!item in $!tableinfo.pkColList)
+	/**${item.comment}*/
+	private ${item.javaTypeShort} ${item.javaName};
+
+	#end
+	/**$!{tableinfo.uuidColum.comment}*/
+	private $!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName};
+
+	#foreach($!item in $!tableinfo.npkColList)
+	/**${item.comment}*/
+	private ${item.javaTypeShort} ${item.javaName};
+
+	#end
+	#foreach($!item in $!tableinfo.pkColList)
+	public ${item.javaTypeShort} get${item.javaNameUpcase}() {
+		return ${item.javaName};
+	}
+
+	public void set${item.javaNameUpcase}(${item.javaTypeShort} ${item.javaName}) {
+		this.${item.javaName} = ${item.javaName};
+	}
+
+	#end
+	public $!{tableinfo.uuidColum.javaTypeShort} get$!{tableinfo.uuidColum.javaNameUpcase}() {
+		return $!{tableinfo.uuidColum.javaName};
+	}
+
+	public void set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName}) {
+		this.$!{tableinfo.uuidColum.javaName} = $!{tableinfo.uuidColum.javaName};
+	}
+
+	#foreach($!item in $!tableinfo.npkColList)
+	public ${item.javaTypeShort} get${item.javaNameUpcase}() {
+		return ${item.javaName};
+	}
+
+	public void set${item.javaNameUpcase}(${item.javaTypeShort} ${item.javaName}) {
+		this.${item.javaName} = ${item.javaName};
+	}
+
+	#end
+	public $!{tableinfo.tableNameFtUpcase}VO() {
+	}
+
+	@Override
+	public void convertPOToVO(Object poObj) {
+		if (null == poObj) {
+			return;
+		}
+
+		${tableinfo.tableNameFtUpcase} po = (${tableinfo.tableNameFtUpcase}) poObj;
+		this.${tableinfo.uuidColum.javaName} = po.get${tableinfo.uuidColum.javaNameUpcase}();
+		#foreach($!item in $!tableinfo.npkColList)
+		this.${item.javaName} = po.get${item.javaNameUpcase}();
+		#end
+	}
+}

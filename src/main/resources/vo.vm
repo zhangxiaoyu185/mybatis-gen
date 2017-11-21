@@ -1,0 +1,44 @@
+package ${tableinfo.packageName}.dao.vo;
+
+import com.jumore.jmzxcenter.manage.common.param.PageParam;
+#foreach($!item in $!tableinfo.importPack)
+import ${item};
+#end
+
+/**
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+public class ${tableinfo.tableNameFtUpcase}VO extends PageParam {
+	#foreach($!item in $!tableinfo.pkColList)
+	/**${item.comment}*/
+	private ${item.javaTypeShort} ${item.javaName};
+
+	#end
+	#foreach($!item in $!tableinfo.npkColList)
+	/**${item.comment}*/
+	private ${item.javaTypeShort} ${item.javaName};
+
+	#end
+	#foreach($!item in $!tableinfo.pkColList)
+	public ${item.javaTypeShort} get${item.javaNameUpcase}() {
+		return ${item.javaName};
+	}
+
+	public void set${item.javaNameUpcase}(${item.javaTypeShort} ${item.javaName}) {
+		this.${item.javaName} = ${item.javaName};
+	}
+
+	#end
+	#foreach($!item in $!tableinfo.npkColList)
+	public ${item.javaTypeShort} get${item.javaNameUpcase}() {
+		return ${item.javaName};
+	}
+
+	public void set${item.javaNameUpcase}(${item.javaTypeShort} ${item.javaName}) {
+		this.${item.javaName} = ${item.javaName};
+	}
+
+	#end
+}

@@ -1,0 +1,61 @@
+package $!{tableinfo.packageName}.entity;
+
+#foreach($item in $!tableinfo.importPack)
+import $!{item};
+#end
+
+/**
+* $!{tableinfo.tableDesc}
+* @author: $!tableinfo.author
+* @since: $!tableinfo.since
+* @history:
+*/
+public class $!{tableinfo.tableNameFtUpcase} extends BaseEntity {
+
+	private static final long serialVersionUID = 1L;
+
+	#foreach($item in $!{tableinfo.pkColList})
+	/**$!{item.comment}*/
+	private $!{item.javaTypeShort} $!{item.javaName};
+
+	#end
+	/**$!{tableinfo.uuidColum.comment}*/
+	private $!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName};
+
+	#foreach($item in $!{tableinfo.npkColList})
+	/**$!{item.comment}*/
+	private $!{item.javaTypeShort} $!{item.javaName};
+
+	#end
+	#foreach($item in $!{tableinfo.pkColList})
+	public $!{item.javaTypeShort} get$!{item.javaNameUpcase}() {
+		return $!{item.javaName};
+	}
+
+	public void set$!{item.javaNameUpcase}($!{item.javaTypeShort} $!{item.javaName}) {
+		this.$!{item.javaName} = $!{item.javaName};
+	}
+
+	#end
+	public $!{tableinfo.uuidColum.javaTypeShort} get$!{tableinfo.uuidColum.javaNameUpcase}() {
+		return $!{tableinfo.uuidColum.javaName};
+	}
+
+	public void set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName}) {
+		this.$!{tableinfo.uuidColum.javaName} = $!{tableinfo.uuidColum.javaName};
+	}
+
+	#foreach($item in $!tableinfo.npkColList)
+	public $!{item.javaTypeShort} get$!{item.javaNameUpcase}() {
+		return $!{item.javaName};
+	}
+
+	public void set$!{item.javaNameUpcase}($!{item.javaTypeShort} $!{item.javaName}) {
+		this.$!{item.javaName} = $!{item.javaName};
+	}
+
+	#end
+	public $!{tableinfo.tableNameFtUpcase}() {
+	}
+
+}
