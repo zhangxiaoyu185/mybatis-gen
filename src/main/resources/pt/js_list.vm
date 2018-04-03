@@ -25,7 +25,7 @@ $(function () {
 			maxmin: true,
 			shadeClose: false, //点击遮罩关闭层
 			area : [widthLayer , heightLayer],
-			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_detail.html?id='+$(this).attr("data-id")+'&timestamp='+(new Date()).valueOf()
+			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_detail$!{strHtml}?id='+$(this).attr("data-id")+'&timestamp='+(new Date()).valueOf()
 		});
 	});
 	//新增
@@ -37,7 +37,7 @@ $(function () {
 			maxmin: true,
 			shadeClose: false, //点击遮罩关闭层
 			area : [widthLayer , heightLayer],
-			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_add.html?timestamp='+(new Date()).valueOf()
+			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_add$!{strHtml}?timestamp='+(new Date()).valueOf()
 		});
 	});
 	//修改
@@ -49,7 +49,7 @@ $(function () {
 			maxmin: true,
 			shadeClose: false, //点击遮罩关闭层
 			area : [widthLayer , heightLayer],
-			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_modify.html?id='+$(this).attr("data-id")+'&timestamp='+(new Date()).valueOf()
+			content: '../$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_modify$!{strHtml}?id='+$(this).attr("data-id")+'&timestamp='+(new Date()).valueOf()
 		});
 	});
 	//全选
@@ -197,7 +197,7 @@ function showList(obj,pagenum){
 #end
 				{name:"操作",percent:"10"}];
 	setTableHead(aData);
-	var str = 'pageNum='+pagenum+'&pageSize=10';
+	var str = 'pageNum='+pagenum+'&pageSize=15';
 	#foreach($item in $!{tableinfo.npkColList})
 	if(obj.$!{item.javaName}!=""){
 		str += '&$!{item.javaName}='+encodeURIComponent(obj.$!{item.javaName});
@@ -209,7 +209,7 @@ function showList(obj,pagenum){
 		var ln = arrData.length;
 		for(var i=0;i<ln;i++){
 			strhtml_list += '<tr class="trHighLight">'
-				+'<td>'+'<input type="checkbox" name="checkbox" value="checkbox" data-id="'+arrData[i].crbftUuid+'"/>'+'</td>'
+				+'<td>'+'<input type="checkbox" name="checkbox" value="checkbox" data-id="'+arrData[i].$!{tableinfo.uuidColum.javaName}+'"/>'+'</td>'
 	#foreach($item in $!{tableinfo.npkColList})
         		+'<td>'+(arrData[i].$!{item.javaName} || "")+'</td>'
 	#end
@@ -226,7 +226,7 @@ function showList(obj,pagenum){
 	);
 }
 function isNull(obj,pagenum){
-	var str = 'pageNum='+pagenum+'&pageSize=10';
+	var str = 'pageNum='+pagenum+'&pageSize=15';
 	#foreach($item in $!{tableinfo.npkColList})
     if(obj.$!{item.javaName}!=""){
     	str += '&$!{item.javaName}='+encodeURIComponent(obj.$!{item.javaName});

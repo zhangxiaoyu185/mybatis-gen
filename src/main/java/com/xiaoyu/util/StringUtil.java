@@ -1,5 +1,7 @@
 package com.xiaoyu.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class StringUtil {
 
 	public static String javaShortTypeName(String fullname) {
@@ -44,5 +46,12 @@ public class StringUtil {
 
 	public static String charLowcase(String input) {
 		return input.toLowerCase();
+	}
+
+	public static String cutLastChar(String input) {
+		if(StringUtils.isEmpty(input)) {
+			return "";
+		}
+		return input.substring(0, input.length()-1);
 	}
 }

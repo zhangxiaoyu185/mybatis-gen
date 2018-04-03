@@ -61,6 +61,8 @@ public class PTGeneratorMain {
 			PTDomainCreator.class,
 			PTVoCreator.class,
 			PTControllerCreator.class,
+//			PTSwaggerVoCreator.class,
+//			PTSwaggerControllerCreator.class,
 			PTServiceCreator.class,
 			PTServiceImplCreator.class
 		};

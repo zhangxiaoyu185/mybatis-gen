@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../js/layer/layer.js?ts=new Date()"></script>
 <script type="text/javascript" src="../../common.js"></script>
 <script type="text/javascript" src="../js/common/common.js?ts=new Date()"></script>
-<script type="text/javascript" src="../js/$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_add.js?ts=new Date()"></script>
+<script type="text/javascript" src="../js/$!{tableinfo.fileName}/$!stringUtil.charLowcase($!{tableinfo.tableNameFt})_add$!{strJs}?ts=new Date()"></script>
 </head>
 <body>
 	<div class="box">

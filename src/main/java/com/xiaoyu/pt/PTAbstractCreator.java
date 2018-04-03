@@ -34,6 +34,8 @@ public abstract class PTAbstractCreator {
 		VelocityContext ctx = new VelocityContext();
 		ctx.put("tableinfo", tableinfo);
 		ctx.put("stringUtil", new StringUtil());
+		ctx.put("strHtml", ".html");
+		ctx.put("strJs", ".js");
 		StringWriter tmp = new StringWriter();
 		// 转换输出, 去除velocity代码缩进的空格符
 		//System.out.println(t.getData().toString());

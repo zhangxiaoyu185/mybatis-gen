@@ -84,6 +84,11 @@
 	<select id="find${tableinfo.tableNameFtUpcase}ForLists" resultMap="${tableinfo.tableNameFt}Mapper" parameterType="HashMap">
 		SELECT <include refid="${tableinfo.tableNameFt}AsProperty" />
 		FROM ${tableinfo.tableName}
+		#foreach($!item in $!tableinfo.npkColList)
+			#if($!stringUtil.like($!item.javaName,"udate"))
+                ORDER BY $!item.columName DESC
+			#end
+		#end
 	</select>
 	<!--  获取所有page-->
 	<select id="find${tableinfo.tableNameFtUpcase}ForPages" resultMap="${tableinfo.tableNameFt}Mapper" parameterType="HashMap">
@@ -102,5 +107,10 @@
 				#end
 			#end
 		</where>
+		#foreach($!item in $!tableinfo.npkColList)
+			#if($!stringUtil.like($!item.javaName,"udate"))
+                ORDER BY $!item.columName DESC
+			#end
+		#end
 	</select>
 </mapper>

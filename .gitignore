@@ -26,7 +26,5 @@ dist/
 .DS_Store
 
 #resource
-mvn_package.bat
 src/main/resources/jdbc.properties
 src/main/resources/pt/ptjdbc.properties
-jumore/jmzxcenter/

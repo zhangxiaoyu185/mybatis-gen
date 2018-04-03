@@ -35,7 +35,7 @@ function getInfo(id){
 				#end
 			#end
 		} else {
-			alert(data.errMsg);
+			alert(oData.errMsg);
 		}
 	}});
 }

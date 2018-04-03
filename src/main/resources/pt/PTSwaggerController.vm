@@ -1,5 +1,9 @@
 package $!{tableinfo.packageName}.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 #foreach($item in $!tableinfo.importPack)
 import $!{item};
 #end
@@ -7,13 +11,13 @@ import $!{tableinfo.packageName}.service.$!{tableinfo.tableNameFtUpcase}Service;
 import $!{tableinfo.packageName}.core.mybatis.page.Page;
 import $!{tableinfo.packageName}.entity.$!{tableinfo.tableNameFtUpcase};
 import $!{tableinfo.packageName}.tool.RandomUtil;
-import $!{tableinfo.packageName}.tool.StringUtil;
 import $!{tableinfo.packageName}.tool.out.ResultMessageBuilder;
 import $!{tableinfo.packageName}.vo.$!{tableinfo.tableNameFtUpcase}VO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import java.util.List;
 */
 @Controller
 @RequestMapping(value="/$!{tableinfo.tableNameFt}")
+@Api(value="$!{tableinfo.tableNameFt}", description="$!stringUtil.cutLastChar($!{tableinfo.tableDesc})相关操作")
 public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 
 	/**
@@ -40,10 +45,14 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 #end
 	* @return
 	*/
+	@ApiOperation(value="添加", httpMethod = "POST", notes = "添加")
 	@RequestMapping(value="/add/$!{tableinfo.tableNameFt}", method=RequestMethod.POST)
-	public void add$!{tableinfo.tableNameFtUpcase} (#foreach($item in $!{tableinfo.npkColList})$!{item.javaTypeShort} $!{item.javaName}, #end HttpServletResponse response) {
+	public void add$!{tableinfo.tableNameFtUpcase} (
+		#foreach($item in $!{tableinfo.npkColList})
+			@ApiParam(value="$!{item.comment}", required = true) @RequestParam(value="$!{item.javaName}", required = true) $!{item.javaTypeShort} $!{item.javaName},
+		#end
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin add$!{tableinfo.tableNameFtUpcase}");
-
 		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
 		String uuid = RandomUtil.generateString(16);
 		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}(uuid);
@@ -67,14 +76,14 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	* @return
 	*/
 	@RequestMapping(value="/update/$!{tableinfo.tableNameFt}", method=RequestMethod.POST)
-	public void update$!{tableinfo.tableNameFtUpcase} ($!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName}, #foreach($item in $!{tableinfo.npkColList})$!{item.javaTypeShort} $!{item.javaName}, #end HttpServletResponse response) {
+	@ApiOperation(value="修改", httpMethod = "POST", notes = "修改")
+	public void update$!{tableinfo.tableNameFtUpcase} (
+			@ApiParam(value="$!{tableinfo.uuidColum.comment}", required = true) @RequestParam(value="$!{tableinfo.uuidColum.javaName}", required = true) $!{tableinfo.uuidColum.javaTypeShort} $!{tableinfo.uuidColum.javaName},
+		#foreach($item in $!{tableinfo.npkColList})
+			@ApiParam(value="$!{item.comment}", required = true) @RequestParam(value="$!{item.javaName}", required = true) $!{item.javaTypeShort} $!{item.javaName},
+		#end
+		HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin update$!{tableinfo.tableNameFtUpcase}");
-
-		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
-			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
-			return;
-		}
-
 		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
 		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
 #foreach($item in $!{tableinfo.npkColList})
@@ -93,15 +102,12 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	* @param $!{tableinfo.uuidColum.javaName} $!{tableinfo.uuidColum.comment}
 	* @return
 	*/
+	@ApiOperation(value="删除", httpMethod = "POST", notes = "删除")
 	@RequestMapping(value="/delete/one", method=RequestMethod.POST)
-	public void delete$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}, HttpServletResponse response) {
+	public void delete$!{tableinfo.tableNameFtUpcase} (
+			@ApiParam(value="$!{tableinfo.uuidColum.comment}", required = true) @RequestParam(value="$!{tableinfo.uuidColum.javaName}", required = true) String $!{tableinfo.uuidColum.javaName},
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin delete$!{tableinfo.tableNameFtUpcase}");
-
-		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
-			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
-			return;
-		}
-
 		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
 		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
 
@@ -117,15 +123,12 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	* @param $!{tableinfo.uuidColum.javaName}s UUID集合
 	* @return
 	*/
+	@ApiOperation(value="批量删除", httpMethod = "POST", notes = "批量删除")
 	@RequestMapping(value="/delete/batch", method=RequestMethod.POST)
-	public void deleteBatch$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}s, HttpServletResponse response) {
+	public void deleteBatch$!{tableinfo.tableNameFtUpcase} (
+			@ApiParam(value="$!stringUtil.cutLastChar($!{tableinfo.tableDesc})标识集合(|拼接)", required = true) @RequestParam(value="$!{tableinfo.uuidColum.javaName}s", required = true) String $!{tableinfo.uuidColum.javaName}s,
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin deleteBatch$!{tableinfo.tableNameFtUpcase}");
-
-		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName}s)) {
-			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[UUID集合]不能为空!"), response);
-			return;
-		}
-
 		String[] uuids=$!{tableinfo.uuidColum.javaName}s.split("\\|");
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < uuids.length; i++) {
@@ -147,21 +150,18 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	* @param $!{tableinfo.uuidColum.javaName} $!{tableinfo.uuidColum.comment}
 	* @return
 	*/
+    @ApiOperation(value="获取单个", httpMethod = "POST", notes = "获取单个", response = $!{tableinfo.tableNameFtUpcase}VO.class)
 	@RequestMapping(value="/views", method=RequestMethod.POST)
-	public void views$!{tableinfo.tableNameFtUpcase} (String $!{tableinfo.uuidColum.javaName}, HttpServletResponse response) {
+	public void views$!{tableinfo.tableNameFtUpcase} (
+			@ApiParam(value="$!{tableinfo.uuidColum.comment}", required = true) @RequestParam(value="$!{tableinfo.uuidColum.javaName}", required = true)  String $!{tableinfo.uuidColum.javaName},
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin views$!{tableinfo.tableNameFtUpcase}");
-
-		if (StringUtil.isEmpty($!{tableinfo.uuidColum.javaName})) {
-			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "[$!{tableinfo.uuidColum.comment}]不能为空!"), response);
-			return;
-		}
-
 		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
 		$!{tableinfo.tableNameFt}.set$!{tableinfo.uuidColum.javaNameUpcase}($!{tableinfo.uuidColum.javaName});
 		$!{tableinfo.tableNameFt} = $!{tableinfo.tableNameFt}Service.get$!{tableinfo.tableNameFtUpcase}($!{tableinfo.tableNameFt});
 		if(null == $!{tableinfo.tableNameFt}){
 			writeAjaxJSONResponse(ResultMessageBuilder.build(false, -1, "$!stringUtil.cutLastChar($!{tableinfo.tableDesc})不存在!"),response);
-			logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end views$!{tableinfo.tableNameFtUpcase}");
+    		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:end views$!{tableinfo.tableNameFtUpcase}");
 			return;
 		}
 
@@ -177,10 +177,11 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	* 
 	* @return
 	*/
+    @ApiOperation(value="获取$!stringUtil.cutLastChar($!{tableinfo.tableDesc})列表", httpMethod = "POST", notes = "获取$!stringUtil.cutLastChar($!{tableinfo.tableDesc})列表", response = $!{tableinfo.tableNameFtUpcase}VO.class)
 	@RequestMapping(value="/find/all", method=RequestMethod.POST)
-	public void find$!{tableinfo.tableNameFtUpcase}List (HttpServletResponse response) {
+	public void find$!{tableinfo.tableNameFtUpcase}List (
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin find$!{tableinfo.tableNameFtUpcase}List");
-
 		List<$!{tableinfo.tableNameFtUpcase}> lists = $!{tableinfo.tableNameFt}Service.find$!{tableinfo.tableNameFtUpcase}List();
 		List<$!{tableinfo.tableNameFtUpcase}VO> vos = new ArrayList<$!{tableinfo.tableNameFtUpcase}VO>();
 		$!{tableinfo.tableNameFtUpcase}VO vo;
@@ -195,17 +196,29 @@ public class $!{tableinfo.tableNameFtUpcase}Controller extends BaseController {
 	}
 
 	/**
-	* 获取列表<Page>
+	* 获取分页列表<Page>
 	*
-    * @param $!{tableinfo.tableNameFt}
+#foreach($item in $!{tableinfo.npkColList})
+    * @param $!{item.javaName} $!{item.comment}
+#end
 	* @param pageNum 页码
 	* @param pageSize 页数
 	* @return
 	*/
+    @ApiOperation(value="获取$!stringUtil.cutLastChar($!{tableinfo.tableDesc})分页列表", httpMethod = "POST", notes = "获取$!stringUtil.cutLastChar($!{tableinfo.tableDesc})分页列表", response = $!{tableinfo.tableNameFtUpcase}VO.class)
 	@RequestMapping(value="/find/by/cnd", method=RequestMethod.POST)
-	public void find$!{tableinfo.tableNameFtUpcase}Page ($!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt}, Integer pageNum, Integer pageSize, HttpServletResponse response) {
+	public void find$!{tableinfo.tableNameFtUpcase}Page (
+			#foreach($item in $!{tableinfo.npkColList})
+			@ApiParam(value="$!{item.comment}", required = true) @RequestParam(value="$!{item.javaName}", required = true) $!{item.javaTypeShort} $!{item.javaName},
+			#end
+            @ApiParam(value="第几页", required = false) @RequestParam(value="pageNum", required = false) Integer pageNum,
+            @ApiParam(value="每页数量", required = false) @RequestParam(value="pageSize", required = false) Integer pageSize,
+			HttpServletResponse response) {
 		logger.info("[$!{tableinfo.tableNameFtUpcase}Controller]:begin find$!{tableinfo.tableNameFtUpcase}Page");
-
+		$!{tableinfo.tableNameFtUpcase} $!{tableinfo.tableNameFt} = new $!{tableinfo.tableNameFtUpcase}();
+#foreach($item in $!{tableinfo.npkColList})
+		$!{tableinfo.tableNameFt}.set$!{item.javaNameUpcase}($!{item.javaName});
+#end
 		if (pageNum == null || pageNum == 0) {
 			pageNum = 1;
 		}

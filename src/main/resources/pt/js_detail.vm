@@ -12,7 +12,7 @@ function getInfo(id){
 		if(oData.code == 1) {
 	#foreach($item in $!{tableinfo.npkColList})
 		#if($!stringUtil.like($!{item.javaName}, "pic"))
-			getImageWidthHeight(urlfile+"/coreAttachment/image/get/thumb/"+oData.data.$!{item.javaName},function(realWidth,realHeight){
+			getImageWidthHeight(urlfile+"/coreAttachment/image/get/"+oData.data.$!{item.javaName},function(realWidth,realHeight){
 				var width = 0;
 				var height = 200;
 				//如果真实的宽度大于浏览器的宽度就按照200显示
@@ -22,15 +22,16 @@ function getInfo(id){
 				}else{//如果小于浏览器的宽度按照原尺寸显示}
 					$(".preimg").css("width",realWidth+'px').css("height",realHeight+'px');
 				}
-				$(".preimg").attr("src",urlfile+"/coreAttachment/image/get/thumb/"+oData.data.$!{item.javaName});
-				$(".preimg").attr("data-filename",$!{item.comment});
+				$(".preimg").attr("src",urlfile+"/coreAttachment/image/get/"+oData.data.$!{item.javaName});
 			});
+		#elseif($!stringUtil.like($!{item.javaName}, "date"))
+        	$(".$!{item.javaName}").text(getFormatDate(oData.data.$!{item.javaName}) || "");
 		#else
 			$(".$!{item.javaName}").text(oData.data.$!{item.javaName} || "");
 		#end
 	#end
 		} else {
-			alert(data.errMsg);
+			alert(oData.errMsg);
 		}
 	}});
 }
